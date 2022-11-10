@@ -28,5 +28,15 @@ pipeline {
         sh 'python3 -m pytest test_dqchecks_methods.py'
       }
     }
+     stage('Create new branch') {
+      steps {
+        sh 'git checkout -b pre-prod'
+        sh 'git add .'
+        sh 'git config --global user.name "AnastasiyaPavlovskayaT"'
+        sh 'git config --global user.email "at.pavlovskaya@gmail.com"'
+        sh 'git commit -m "commit"'
+        sh 'git push https://${token_dq}@github.com/AnastasiyaPavlovskayaT/ci-cd-dq-m5-test.git'
+      }
+    }
   }
 }
