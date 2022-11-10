@@ -35,7 +35,7 @@ pipeline {
         sh 'git config --global user.name "AnastasiyaPavlovskayaT"'
         sh 'git config --global user.email "at.pavlovskaya@gmail.com"'
         sh 'git commit -m "commit"'
-        sh 'git push https://${token_dq}@github.com/AnastasiyaPavlovskayaT/ci-cd-dq-m5-test.git'
+        sh 'git push https://${token}@github.com/AnastasiyaPavlovskayaT/ci-cd-dq-m5-test.git'
       }
     }
   }
