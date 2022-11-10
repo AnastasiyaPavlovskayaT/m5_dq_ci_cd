@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 6.0.1 (Python 3.9.2 on linux)" generated="20221110 00:28:50.845" rpa="false" schemaversion="3">
+<suite id="s1" name="Test Cases" source="/var/jenkins_home/workspace/M5-DQ-CI-CD/test_cases.robot">
+<kw name="Connect To Database" library="DatabaseLibrary" type="SETUP">
+<arg>pymssql</arg>
+<arg>${DBName}</arg>
+<arg>${DBUser}</arg>
+<arg>${DBPass}</arg>
+<arg>${DBHost}</arg>
+<arg>${DBPort}</arg>
+<doc>Loads the DB API 2.0 module given `dbapiModuleName` then uses it to
+connect to the database using `dbName`, `dbUsername`, and `dbPassword`.</doc>
+<msg timestamp="20221110 00:28:50.889" level="INFO">Connecting using : pymssql.connect(database=AdventureWorks2012, user=roboto, password=roboto123, host=192.168.0.185, port=1433) </msg>
+<status status="PASS" starttime="20221110 00:28:50.882" endtime="20221110 00:28:50.911"/>
+</kw>
+<test id="s1-t1" name="Verify row count" line="9">
+<kw name="Row Count Is Equal To X" library="DatabaseLibrary">
+<arg>SELECT * FROM [AdventureWorks2012].[Person].[Address];</arg>
+<arg>19614</arg>
+<doc>Check if the number of rows returned from `selectStatement` is equal to the value submitted. If not, then this
+will throw an AssertionError. Set optional input `sansTran` to True to run command without an explicit
+transaction commit or rollback.</doc>
+<msg timestamp="20221110 00:28:50.913" level="INFO">Executing : Row Count Is Equal To X  |  SELECT * FROM [AdventureWorks2012].[Person].[Address];  |  19614 </msg>
+<msg timestamp="20221110 00:28:50.913" level="INFO">Executing : Row Count  |  SELECT * FROM [AdventureWorks2012].[Person].[Address]; </msg>
+<status status="PASS" starttime="20221110 00:28:50.913" endtime="20221110 00:28:51.769"/>
+</kw>
+<doc>|
+| TC1. Verify Row Count
+|</doc>
+<tag>[Person].[Address] Table</tag>
+<status status="PASS" starttime="20221110 00:28:50.911" endtime="20221110 00:28:51.769"/>
+</test>
+<test id="s1-t2" name="get count unique StateProvinceID values" line="17">
+<kw name="Get Count" library="BuiltIn">
+<arg>SELECT COUNT(DISTINCT StateProvinceID) FROM [AdventureWorks2012].[Person].[Address];</arg>
+<arg>74</arg>
+<doc>Returns and logs how many times ``item`` is found from ``container``.</doc>
+<msg timestamp="20221110 00:28:51.771" level="INFO">Item found from container 0 times.</msg>
+<status status="PASS" starttime="20221110 00:28:51.770" endtime="20221110 00:28:51.771"/>
+</kw>
+<doc>|
+| TC2. Verify uniquness of StateProvinceID column
+|</doc>
+<tag>[Person].[Address] Table</tag>
+<status status="PASS" starttime="20221110 00:28:51.770" endtime="20221110 00:28:51.771"/>
+</test>
+<test id="s1-t3" name="get count Not Null AddresLine2 values" line="25">
+<kw name="Get Count" library="BuiltIn">
+<arg>SELECT COUNT(*) FROM [AdventureWorks2012].[Person].[Address] WHERE AddressLine2 is not null;</arg>
+<arg>362</arg>
+<doc>Returns and logs how many times ``item`` is found from ``container``.</doc>
+<msg timestamp="20221110 00:28:51.772" level="INFO">Item found from container 0 times.</msg>
+<status status="PASS" starttime="20221110 00:28:51.772" endtime="20221110 00:28:51.772"/>
+</kw>
+<doc>|
+| TC3. Verify count of not null AddressLine2
+|</doc>
+<tag>[Person].[Address] Table</tag>
+<status status="PASS" starttime="20221110 00:28:51.771" endtime="20221110 00:28:51.772"/>
+</test>
+<test id="s1-t4" name="ModifiedDate in the future" line="33">
+<kw name="Get Count" library="BuiltIn">
+<arg>SELECT COUNT(*) FROM [AdventureWorks2012].[Person].[Address] WHERE ModifiedDate &gt; GETDATE();</arg>
+<arg>0</arg>
+<doc>Returns and logs how many times ``item`` is found from ``container``.</doc>
+<msg timestamp="20221110 00:28:51.773" level="INFO">Item found from container 1 time.</msg>
+<status status="PASS" starttime="20221110 00:28:51.773" endtime="20221110 00:28:51.773"/>
+</kw>
+<doc>|
+| TC4. Check that no exist ModifiedDate in the future
+|</doc>
+<tag>[Person].[Address] Table</tag>
+<status status="PASS" starttime="20221110 00:28:51.772" endtime="20221110 00:28:51.773"/>
+</test>
+<test id="s1-t5" name="Max lenght of DocumentSummary" line="41">
+<kw name="Length Should Be" library="BuiltIn">
+<arg>SELECT MAX(DocumentSummary) FROM [AdventureWorks2012].[Production].[Document];</arg>
+<arg>78</arg>
+<doc>Verifies that the length of the given item is correct.</doc>
+<msg timestamp="20221110 00:28:51.774" level="INFO">Length is 78</msg>
+<status status="PASS" starttime="20221110 00:28:51.774" endtime="20221110 00:28:51.774"/>
+</kw>
+<doc>|
+| TC5. Check MAX length of the DocumentSummary column
+|</doc>
+<tag>[Production].[Document] Table</tag>
+<status status="PASS" starttime="20221110 00:28:51.774" endtime="20221110 00:28:51.775"/>
+</test>
+<test id="s1-t6" name="Flag value not in range" line="49">
+<kw name="Get Count" library="BuiltIn">
+<arg>SELECT COUNT(*) FROM [AdventureWorks2012].[Production].[Document] WHERE FolderFlag NOT IN (0,1);</arg>
+<arg>0</arg>
+<doc>Returns and logs how many times ``item`` is found from ``container``.</doc>
+<msg timestamp="20221110 00:28:51.776" level="INFO">Item found from container 2 times.</msg>
+<status status="PASS" starttime="20221110 00:28:51.775" endtime="20221110 00:28:51.776"/>
+</kw>
+<doc>|
+| TC6. Check the FolderFlag column values in the valid range
+|</doc>
+<tag>[Production].[Document] Table</tag>
+<status status="PASS" starttime="20221110 00:28:51.775" endtime="20221110 00:28:51.776"/>
+</test>
+<test id="s1-t7" name="Count unique values" line="57">
+<kw name="Execute Sql String" library="DatabaseLibrary">
+<var>${output}</var>
+<arg>SELECT CASE WHEN COUNT(distinct UnitMeasureCode) = COUNT(Distinct Name) THEN 'TRUE' ELSE 'FALSE' END FROM [AdventureWorks2012].[Production].[UnitMeasure];</arg>
+<doc>Executes the sqlString as SQL commands. Useful to pass arguments to your sql. Set optional input `sansTran` to
+True to run command without an explicit transaction commit or rollback.</doc>
+<msg timestamp="20221110 00:28:51.777" level="INFO">Executing : Execute SQL String  |  SELECT CASE WHEN COUNT(distinct UnitMeasureCode) = COUNT(Distinct Name) THEN 'TRUE' ELSE 'FALSE' END FROM [AdventureWorks2012].[Production].[UnitMeasure]; </msg>
+<msg timestamp="20221110 00:28:51.786" level="INFO">${output} = None</msg>
+<status status="PASS" starttime="20221110 00:28:51.776" endtime="20221110 00:28:51.786"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>${output}</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20221110 00:28:51.786" level="INFO">None</msg>
+<status status="PASS" starttime="20221110 00:28:51.786" endtime="20221110 00:28:51.786"/>
+</kw>
+<kw name="Should Be Equal As Strings" library="BuiltIn">
+<arg>${output}</arg>
+<arg>None</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<msg timestamp="20221110 00:28:51.787" level="INFO">Argument types are:
+&lt;class 'NoneType'&gt;
+&lt;class 'str'&gt;</msg>
+<status status="PASS" starttime="20221110 00:28:51.787" endtime="20221110 00:28:51.787"/>
+</kw>
+<doc>|
+| TC7. Check the that measures are unique
+|</doc>
+<tag>[Production].[UnitMeasure] Table</tag>
+<status status="PASS" starttime="20221110 00:28:51.776" endtime="20221110 00:28:51.787"/>
+</test>
+<test id="s1-t8" name="Duplicates" line="67">
+<kw name="Row Count Is Equal To X" library="DatabaseLibrary">
+<arg>SELECT [UnitMeasureCode],[Name],[ModifiedDate],COUNT(*) FROM [AdventureWorks2012].[Production].[UnitMeasure] GROUP BY [UnitMeasureCode],[Name],[ModifiedDate] HAVING COUNT(*) &gt; 1;</arg>
+<arg>0</arg>
+<doc>Check if the number of rows returned from `selectStatement` is equal to the value submitted. If not, then this
+will throw an AssertionError. Set optional input `sansTran` to True to run command without an explicit
+transaction commit or rollback.</doc>
+<msg timestamp="20221110 00:28:51.788" level="INFO">Executing : Row Count Is Equal To X  |  SELECT [UnitMeasureCode],[Name],[ModifiedDate],COUNT(*) FROM [AdventureWorks2012].[Production].[UnitMeasure] GROUP BY [UnitMeasureCode],[Name],[ModifiedDate] HAVING COUNT(*) &gt; 1;  |  0 </msg>
+<msg timestamp="20221110 00:28:51.788" level="INFO">Executing : Row Count  |  SELECT [UnitMeasureCode],[Name],[ModifiedDate],COUNT(*) FROM [AdventureWorks2012].[Production].[UnitMeasure] GROUP BY [UnitMeasureCode],[Name],[ModifiedDate] HAVING COUNT(*) &gt; 1; </msg>
+<status status="PASS" starttime="20221110 00:28:51.788" endtime="20221110 00:28:51.793"/>
+</kw>
+<doc>|
+| TC8. Duplicates check
+|</doc>
+<tag>[Production].[UnitMeasure] Table</tag>
+<status status="PASS" starttime="20221110 00:28:51.787" endtime="20221110 00:28:51.793"/>
+</test>
+<doc>DQ checks for [AdventureWorks2012] database</doc>
+<status status="PASS" starttime="20221110 00:28:50.846" endtime="20221110 00:28:51.794"/>
+</suite>
+<statistics>
+<total>
+<stat pass="8" fail="0" skip="0">All Tests</stat>
+</total>
+<tag>
+<stat pass="4" fail="0" skip="0">[Person].[Address] Table</stat>
+<stat pass="2" fail="0" skip="0">[Production].[Document] Table</stat>
+<stat pass="2" fail="0" skip="0">[Production].[UnitMeasure] Table</stat>
+</tag>
+<suite>
+<stat pass="8" fail="0" skip="0" id="s1" name="Test Cases">Test Cases</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>
